@@ -1,6 +1,6 @@
-import 'package:default_project/utils/color.dart';
 import 'package:flutter/material.dart';
 
+import 'color.dart';
 
 class MyTextStyle {
   static final TextStyle sfProLight = TextStyle(

@@ -28,7 +28,6 @@ dependencies:
   email_validator: '^2.1.16'
   flutter_svg: ^1.1.1+1
   lottie: ^1.4.3
-  fluttertoast: ^8.0.9
   modal_bottom_sheet: ^2.0.1
   easy_localization: ^3.0.1
   connectivity_plus: ^2.3.7

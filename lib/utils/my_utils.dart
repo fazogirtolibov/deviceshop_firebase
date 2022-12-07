@@ -1,9 +1,11 @@
-import 'package:default_project/utils/color.dart';
+
 import 'package:default_project/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'color.dart';
 
 class MyUtils {
   static showSnackBar(BuildContext context, String? text) {
