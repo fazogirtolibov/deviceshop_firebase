@@ -1,7 +1,7 @@
-
 import 'package:default_project/ui/auth/widgets/my_rich_text.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/color.dart';
@@ -24,24 +24,27 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  bool isPas = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.black,
-      appBar: AppBar(
-          title: Text(
-        "Sign Up",
-      )),
+      backgroundColor: MyColors.white,
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 100),
+              Text(
+                "Register",
+                style: GoogleFonts.raleway(
+                    fontWeight: FontWeight.w700, fontSize: 30),
+              ),
+              const SizedBox(height: 100),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextFormField(
                   controller: emailController,
                   textInputAction: TextInputAction.next,
@@ -51,53 +54,77 @@ class _SignUpPageState extends State<SignUpPage> {
                           ? "Enter a valid email"
                           : null,
                   style: MyTextStyle.sfProRegular.copyWith(
-                    color: MyColors.white,
+                    color: MyColors.black,
                     fontSize: 17,
                   ),
                   decoration: getInputDecoration(label: "Email"),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextFormField(
                   controller: passwordController,
                   textInputAction: TextInputAction.next,
-                  obscureText: true,
+                  obscureText: isPas,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (password) =>
                       password != null && password.length < 6
                           ? "Enter at least 6 charcter !"
                           : null,
                   style: MyTextStyle.sfProRegular.copyWith(
-                    color: MyColors.white,
+                    color: MyColors.black,
                     fontSize: 17,
                   ),
-                  decoration: getInputDecoration(label: "Password"),
+                  decoration: getInputDecorationByPassword(
+                      label: 'Password',
+                      onTap: () {
+                        setState(() {
+                          setState(() {
+                            isPas = !isPas;
+                          });
+                        });
+                      },
+                      isPas: isPas),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextFormField(
                   controller: confirmPasswordController,
                   textInputAction: TextInputAction.done,
-                  obscureText: true,
+                  obscureText: isPas,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (password) =>
                       password != null && password.length < 6
                           ? "Enter at least 6 charcter !"
                           : null,
                   style: MyTextStyle.sfProRegular.copyWith(
-                    color: MyColors.white,
+                    color: MyColors.black,
                     fontSize: 17,
                   ),
-                  decoration: getInputDecoration(label: "Confirm password"),
+                  decoration: getInputDecorationByPassword(
+                      label: 'Password',
+                      onTap: () {
+                        setState(() {
+                          setState(() {
+                            isPas = !isPas;
+                          });
+                        });
+                      },
+                      isPas: isPas),
                 ),
               ),
-              SizedBox(height: 50),
-              TextButton(onPressed: signUp, child: Text("Sign Up")),
-              SizedBox(height: 20),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: signUp,
+                child: Text("Sign Up"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff2A2A2A),
+                ),
+              ),
+              const SizedBox(height: 20),
               MyRichText(
                 onTap: widget.onClickedSignIn,
               ),
@@ -117,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
     String confirmPassword = confirmPasswordController.text.trim();
 
     if (confirmPassword == password) {
-      Provider.of<AuthViewModel>(context,listen: false).signUp(
+      Provider.of<AuthViewModel>(context, listen: false).signUp(
         email: email,
         password: password,
       );

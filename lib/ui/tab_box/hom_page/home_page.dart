@@ -1,4 +1,6 @@
+import 'package:default_project/view_models/categories_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/models/category.dart';
 
@@ -15,8 +17,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
+        backgroundColor: const Color(0xff2A2A2A),
       ),
       body: StreamBuilder<List<CategoryModel>>(
+        stream: Provider.of<CategoriesViewModel>(context, listen: false)
+            .listenCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

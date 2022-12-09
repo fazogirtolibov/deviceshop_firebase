@@ -1,4 +1,3 @@
-
 import 'package:default_project/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -57,15 +56,13 @@ class MyUtils {
       fontSize: 16.0,
     );
   }
-
-
 }
 
 InputDecoration getInputDecoration({required String label}) {
   return InputDecoration(
     labelText: label,
     labelStyle: MyTextStyle.sfProRegular.copyWith(
-      color: MyColors.white,
+      color: MyColors.black.withOpacity(0.5),
       fontSize: 16,
     ),
     border: const OutlineInputBorder(
@@ -75,10 +72,38 @@ InputDecoration getInputDecoration({required String label}) {
       ),
     ),
     enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.white)),
+        borderSide: BorderSide(width: 1, color: Colors.black)),
     focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.white)),
+        borderSide: BorderSide(width: 1, color: Colors.black)),
     errorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(width: 1, color: Colors.white)),
+        borderSide: BorderSide(width: 1, color: Colors.black)),
+  );
+}
+
+InputDecoration getInputDecorationByPassword(
+    {required String label, required VoidCallback onTap, required bool isPas}) {
+  return InputDecoration(
+    suffixIcon: InkWell(
+      onTap: onTap,
+      child: Icon(isPas ? Icons.visibility_off : Icons.visibility,
+          color: Colors.black),
+    ),
+    labelText: label,
+    labelStyle: MyTextStyle.sfProRegular.copyWith(
+      color: MyColors.black,
+      fontSize: 16,
+    ),
+    border: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+      borderSide: BorderSide(
+        width: 1,
+      ),
+    ),
+    enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(width: 1, color: Colors.black)),
+    focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(width: 1, color: Colors.black)),
+    errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(width: 1, color: Colors.black)),
   );
 }

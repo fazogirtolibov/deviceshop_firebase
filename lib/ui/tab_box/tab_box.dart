@@ -1,4 +1,3 @@
-
 import 'package:default_project/ui/tab_box/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,7 @@ class _TabBoxState extends State<TabBox> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) => Provider.of<TabViewModel>(context, listen: false)
             .changePageIndex(value),
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),

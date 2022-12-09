@@ -6,7 +6,7 @@ import '../data/repositories/categories_repository.dart';
 class CategoriesViewModel extends ChangeNotifier {
   final CategoryRepository categoryRepository;
 
-  CategoriesViewModel({required this.categoryRepository}){
+  CategoriesViewModel({required this.categoryRepository}) {
     listenCategories();
   }
 
@@ -14,4 +14,13 @@ class CategoriesViewModel extends ChangeNotifier {
 
   Stream<List<CategoryModel>> listenCategories() =>
       categoryRepository.getCategories();
+
+  addCategory(CategoryModel categoryModel) =>
+      categoryRepository.addCategory(categoryModel: categoryModel);
+
+  updateCategory(CategoryModel categoryModel) =>
+      categoryRepository.updateCategory(categoryModel: categoryModel);
+
+  deleteCategory(String docId) =>
+      categoryRepository.deleteCategory(docId: docId);
 }

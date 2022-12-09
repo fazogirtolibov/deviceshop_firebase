@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:provider/provider.dart';
 
@@ -20,52 +21,71 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isPas = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.black,
-      appBar: AppBar(
-        title: Text("Login"),
-      ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 100),
+            Text(
+              "Login",
+              style: GoogleFonts.raleway(
+                  fontWeight: FontWeight.w700, fontSize: 30),
+            ),
+            const SizedBox(height: 100),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
                 controller: emailController,
                 textInputAction: TextInputAction.next,
                 style: MyTextStyle.sfProRegular.copyWith(
-                  color: MyColors.white,
+                  color: MyColors.black,
                   fontSize: 17,
                 ),
                 decoration: getInputDecoration(label: "Email"),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
                 controller: passwordController,
-                obscureText: true,
+                obscureText: !isPas,
                 textInputAction: TextInputAction.done,
                 style: MyTextStyle.sfProRegular.copyWith(
-                  color: MyColors.white,
+                  color: MyColors.black,
                   fontSize: 17,
                 ),
-                decoration: getInputDecoration(label: "Password"),
+                decoration: getInputDecorationByPassword(
+                    label: 'Password',
+                    onTap: () {
+                      setState(() {
+                        setState(() {
+                          isPas = !isPas;
+                        });
+                      });
+                    },
+                    isPas: isPas),
               ),
             ),
-            SizedBox(height: 100),
-            TextButton(onPressed: signIn, child: Text("Sign In")),
-            SizedBox(height: 20),
+            const SizedBox(height: 100),
+            ElevatedButton(
+              onPressed: signIn,
+              child: Text("Sign In"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff2A2A2A),
+              ),
+            ),
+            const SizedBox(height: 20),
             RichText(
               text: TextSpan(
                 style: MyTextStyle.sfProRegular
-                    .copyWith(color: const Color(0xFFFBDF00), fontSize: 18),
+                    .copyWith(color: const Color(0xff2A2A2A), fontSize: 18),
                 text: "Don't have an account?  ",
                 children: [
                   TextSpan(
@@ -73,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                       ..onTap = widget.onClickSignUp,
                     text: "Sign Up",
                     style: MyTextStyle.sfProBold.copyWith(
-                      color: const Color(0xFFFBDF00),
+                      color: const Color(0xff2A2A2A),
                       fontSize: 18,
                     ),
                   )
@@ -89,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
   //" Hello World  "
 
   Future<void> signIn() async {
-    Provider.of<AuthViewModel>(context,listen: false).signIn(
+    Provider.of<AuthViewModel>(context, listen: false).signIn(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );

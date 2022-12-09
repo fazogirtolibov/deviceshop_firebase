@@ -13,14 +13,14 @@ class MyRichText extends StatelessWidget {
     return RichText(
         text: TextSpan(
             style: MyTextStyle.sfProRegular
-                .copyWith(color: const Color(0xFFFBDF00), fontSize: 18),
+                .copyWith(color: const Color(0xff2A2A2A), fontSize: 18),
             text: "Already have an account? ",
             children: [
           TextSpan(
             recognizer: TapGestureRecognizer()..onTap = onTap,
             text: "Sign In",
             style: MyTextStyle.sfProBold.copyWith(
-              color: const Color(0xFFFBDF00),
+              color: const Color(0xff2A2A2A),
               fontSize: 18,
             ),
           )

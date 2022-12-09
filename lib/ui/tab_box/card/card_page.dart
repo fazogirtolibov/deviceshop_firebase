@@ -10,6 +10,11 @@ class CardPage extends StatefulWidget {
 class _CardPageState extends State<CardPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Card"),),);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Card"),
+        backgroundColor: const Color(0xff2A2A2A),
+      ),
+    );
   }
 }
