@@ -8,13 +8,15 @@ import '../data/repositories/product_repository.dart';
 class ProductViewModel extends ChangeNotifier {
   final ProductRepository productRepository;
 
-  ProductViewModel({required this.productRepository});
+  ProductViewModel({required this.productRepository}) {
+    listenProducts('');
+  }
 
   late StreamSubscription subscription;
 
   List<ProductModel> products = [];
 
-  listenProducts() async {
+  listenProducts(String categoryId) async {
     subscription = productRepository.getProducts().listen((allProducts) {
       products = allProducts;
       notifyListeners();

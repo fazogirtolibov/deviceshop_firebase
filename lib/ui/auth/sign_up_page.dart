@@ -80,12 +80,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       label: 'Password',
                       onTap: () {
                         setState(() {
-                          setState(() {
-                            isPas = !isPas;
-                          });
+                          isPas = !isPas;
                         });
                       },
-                      isPas: isPas),
+                      isPas: !isPas),
                 ),
               ),
               const SizedBox(height: 20),
@@ -108,12 +106,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       label: 'Password',
                       onTap: () {
                         setState(() {
-                          setState(() {
-                            isPas = !isPas;
-                          });
+                          isPas = !isPas;
                         });
                       },
-                      isPas: isPas),
+                      isPas: !isPas),
                 ),
               ),
               const SizedBox(height: 50),

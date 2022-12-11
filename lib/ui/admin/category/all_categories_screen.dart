@@ -26,7 +26,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddCategoryScreen()));
+                        builder: (context) => const AddCategoryScreen()));
               },
               icon: const Icon(Icons.add))
         ],

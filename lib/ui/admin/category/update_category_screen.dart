@@ -112,6 +112,7 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
 
                   Provider.of<CategoriesViewModel>(context, listen: false)
                       .updateCategory(categoryModel);
+                  Navigator.pop(context);
                 }
                 Navigator.pop(context);
               },
