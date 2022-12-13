@@ -6,16 +6,17 @@ class OrderModel {
   String userId;
   String orderStatus;
   String createdAt;
+  String productName;
 
-  OrderModel({
-    required this.count,
-    required this.totalPrice,
-    required this.orderId,
-    required this.productId,
-    required this.userId,
-    required this.orderStatus,
-    required this.createdAt,
-  });
+  OrderModel(
+      {required this.count,
+      required this.totalPrice,
+      required this.orderId,
+      required this.productId,
+      required this.userId,
+      required this.orderStatus,
+      required this.createdAt,
+      required this.productName});
 
   factory OrderModel.fromJson(Map<String, dynamic> jsonData) {
     return OrderModel(
@@ -26,6 +27,7 @@ class OrderModel {
       userId: jsonData['userId'] as String? ?? '',
       orderStatus: jsonData['orderStatus'] as String? ?? '',
       createdAt: jsonData['createdAt'] as String? ?? '',
+      productName: jsonData['productName'] as String? ?? '',
     );
   }
 
@@ -38,6 +40,7 @@ class OrderModel {
       'userId': userId,
       'orderStatus': orderStatus,
       'createdAt': createdAt,
+      'productName': productName,
     };
   }
 
@@ -51,6 +54,7 @@ class OrderModel {
       userId: $userId,
       orderStatus: $orderStatus,
       createdAt: $createdAt,
+      productName: $productName,
       ''';
   }
 }

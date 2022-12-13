@@ -16,7 +16,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products Admin"),
+        title: Text("Products Admin"),
         backgroundColor: const Color(0xff2A2A2A),
         actions: [
           IconButton(
@@ -24,16 +24,17 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AddProductScreen()));
+                        builder: (context) => AddProductScreen()));
               },
-              icon: const Icon(Icons.add))
+              icon: Icon(Icons.add))
         ],
       ),
       body: Consumer<ProductViewModel>(
         builder: (context, productViewModel, child) {
           return ListView(
-            children: List.generate(productViewModel.products.length, (index) {
-              var product = productViewModel.products[index];
+            children:
+                List.generate(productViewModel.productsAdmin.length, (index) {
+              var product = productViewModel.productsAdmin[index];
               return ListTile(
                 title: Text(product.productName),
                 trailing: SizedBox(
@@ -51,7 +52,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                               ),
                             );
                           },
-                          icon: const Icon(Icons.edit_note_rounded)),
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
                             context
@@ -59,7 +60,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                 .deleteProduct(product.productId);
                             print("DELETING ID:${product.productId}");
                           },
-                          icon: const Icon(Icons.delete_outline_rounded)),
+                          icon: const Icon(Icons.delete)),
                     ],
                   ),
                 ),

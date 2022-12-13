@@ -33,10 +33,31 @@ class _TabBoxState extends State<TabBox> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) => Provider.of<TabViewModel>(context, listen: false)
             .changePageIndex(value),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: index == 0
+                    ? const Color(0xff2A2A2A)
+                    : Colors.black.withOpacity(0.3),
+              ),
+              label: ""),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shopping_cart,
+                color: index == 1
+                    ? const Color(0xff2A2A2A)
+                    : Colors.black.withOpacity(0.3),
+              ),
+              label: ""),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: index == 2
+                    ? const Color(0xff2A2A2A)
+                    : Colors.black.withOpacity(0.3),
+              ),
+              label: ""),
         ],
       ),
     );

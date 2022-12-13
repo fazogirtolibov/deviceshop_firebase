@@ -1,11 +1,10 @@
+import 'package:default_project/data/models/category.dart';
 import 'package:default_project/data/models/product_model.dart';
+import 'package:default_project/utils/my_utils.dart';
 import 'package:default_project/view_models/categories_view_model.dart';
 import 'package:default_project/view_models/products_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../data/models/category.dart';
-import '../../../utils/my_utils.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({Key? key}) : super(key: key);
@@ -15,13 +14,11 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  final formKey = GlobalKey<FormState>();
   final TextEditingController countController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   List<String> productImages = [
-    "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
     "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
   ];
   String categoryId = "";
@@ -72,7 +69,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 20),
               ExpansionTile(
                 title: Text(selectedCurrency.isEmpty
-                    ? "Select  Currency"
+                    ? "Select  Currncy"
                     : selectedCurrency),
                 children: [
                   ...List.generate(
@@ -87,9 +84,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           ))
                 ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff2A2A2A)),
+              TextButton(
                 onPressed: () {
                   selectCategory((selectedCategory) {
                     categoryModel = selectedCategory;
@@ -103,10 +98,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       : categoryModel!.categoryName,
                 ),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff2A2A2A)),
+              TextButton(
                 onPressed: () {
                   ProductModel productModel = ProductModel(
                     count: int.parse(countController.text),
@@ -122,10 +114,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
                   Provider.of<ProductViewModel>(context, listen: false)
                       .addProduct(productModel);
-                  Navigator.pop(context);
                 },
-                child: const Text("Add Product"),
-              )
+                child: Text("Add Product to Fire Store"),
+              ),
             ],
           ),
         ),
@@ -138,8 +129,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
         context: context,
         builder: (context) {
           return Dialog(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.6,
               width: double.infinity,
               child: StreamBuilder<List<CategoryModel>>(
                 stream: Provider.of<CategoriesViewModel>(context, listen: false)
@@ -156,11 +147,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       children: List.generate(
                         categories.length,
                         (index) => ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                color: Color(0xff2A2A2A), width: 1),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
                           title: Text(categories[index].categoryName),
                           onTap: () {
                             onCategorySelect.call(categories[index]);

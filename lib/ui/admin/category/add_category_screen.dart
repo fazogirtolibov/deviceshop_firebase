@@ -1,11 +1,12 @@
 import 'package:default_project/data/models/category.dart';
+import 'package:default_project/data/services/file_uploader.dart';
+import 'package:default_project/utils/color.dart';
+import 'package:default_project/utils/my_utils.dart';
+import 'package:default_project/utils/style.dart';
+import 'package:default_project/view_models/categories_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
-import '../../../utils/color.dart';
-import '../../../utils/my_utils.dart';
-import '../../../utils/style.dart';
-import '../../../view_models/categories_view_model.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({Key? key}) : super(key: key);
@@ -20,8 +21,8 @@ final descController = TextEditingController();
 String categoryName = '';
 String description = '';
 String createdAt = DateTime.now().toString();
-String imgUrl =
-    'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.wired.co.uk%2Farticle%2Fcode-breaker-1&psig=AOvVaw3nVDklSAyKaQ5rvU-h-0Lw&ust=1670589660048000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKCP1c2F6vsCFQAAAAAdAAAAABAD';
+final ImagePicker _picker = ImagePicker();
+String imageUrl = "";
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   @override
@@ -78,24 +79,37 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       decoration: getInputDecoration(label: "Description"),
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff2A2A2A)),
-                      onPressed: () {},
-                      child: const Text('Choose image'),
-                    ),
+                    if (imageUrl.isNotEmpty)
+                      Image.network(
+                        imageUrl,
+                        width: 200,
+                        height: 120,
+                      ),
+                    for (int index = 0; index < 3; index++)
+                      const ListTile(
+                        title: Text("photo"),
+                      ),
+                    IconButton(
+                        onPressed: () {
+                          _showPicker(context);
+                        },
+                        icon: Icon(Icons.upload))
                   ],
                 )),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff2A2A2A)),
               onPressed: () {
+                if (imageUrl.isEmpty) {
+                  MyUtils.getMyToast(message: "Image tanla!!!!");
+                  return;
+                }
                 if (formKey.currentState!.validate()) {
                   CategoryModel categoryModel = CategoryModel(
                     categoryId: "",
                     categoryName: categoryName,
                     description: description,
-                    imageUrl: imgUrl,
+                    imageUrl: imageUrl,
                     createdAt: createdAt,
                   );
 
@@ -110,5 +124,59 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         ),
       ),
     );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text("Gallery"),
+                    onTap: () {
+                      _getFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    _getFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  _getFromGallery() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1000,
+      maxHeight: 1000,
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      imageUrl = await FileUploader.imageUploader(pickedFile);
+      setState(() {});
+    }
+  }
+
+  _getFromCamera() async {
+    XFile? pickedFile = await _picker.pickImage(
+      maxWidth: 1920,
+      maxHeight: 2000,
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      if (!mounted) return;
+      imageUrl = await FileUploader.imageUploader(pickedFile);
+      setState(() {});
+    }
   }
 }
