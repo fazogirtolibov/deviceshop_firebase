@@ -1,9 +1,10 @@
-import 'dart:io';
 import 'package:default_project/data/services/file_uploader.dart';
 import 'package:default_project/ui/admin/admin_screen.dart';
+import 'package:default_project/utils/color.dart';
 import 'package:default_project/utils/icon.dart';
+import 'package:default_project/view_models/profile_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,45 +26,82 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile page"),
-        backgroundColor: const Color(0xff2A2A2A),
+        title: Text(
+          "Profile",
+          style: GoogleFonts.raleway(
+            color: MyColors.appBarText,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AdminScreen()));
-              },
-              icon: const Icon(Icons.settings))
+          TextButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: Text(
+              "Log Out",
+              style: GoogleFonts.raleway(
+                color: MyColors.appBarText,
+              ),
+            ),
+          ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("${FirebaseAuth.instance.currentUser?.email.toString()}"),
-          Text("${FirebaseAuth.instance.currentUser?.uid.toString()}"),
-          Text("${FirebaseAuth.instance.currentUser?.displayName.toString()}"),
-          isLoading ? CircularProgressIndicator() : SizedBox(),
-          Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            width: 100,
-            height: 100,
-            child: imageUrl.isEmpty
-                ? Image.asset(
-                    MyIcons.imageSample,
-                    fit: BoxFit.cover,
-                  )
-                : Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _showPicker(context);
-            },
-            child: Text("Select Image"),
-          )
-        ],
+      body: Consumer<ProfileViewModel>(
+        builder: (context, profileViewModel, child) {
+          return profileViewModel.user != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(profileViewModel.user!.email.toString()),
+                    Text(profileViewModel.user!.uid.toString()),
+                    Text(profileViewModel.user!.displayName.toString()),
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : const SizedBox(),
+                    Container(
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      width: 100,
+                      height: 100,
+                      child: profileViewModel.user!.photoURL == null
+                          ? Image.asset(
+                              MyIcons.imageSample,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              profileViewModel.user!.photoURL!,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        _showPicker(context);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.height * 0.15,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff2A2A2A),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Add to basket",
+                            style: GoogleFonts.raleway(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -107,7 +145,11 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         isLoading = true;
       });
+      if (!mounted) return;
       imageUrl = await FileUploader.imageUploader(pickedFile);
+      if (!mounted) return;
+      Provider.of<ProfileViewModel>(context, listen: false)
+          .updatePhoto(imageUrl);
       setState(() {
         isLoading = false;
         _image = pickedFile;
@@ -124,6 +166,9 @@ class _ProfilePageState extends State<ProfilePage> {
     if (pickedFile != null) {
       if (!mounted) return;
       imageUrl = await FileUploader.imageUploader(pickedFile);
+      if (!mounted) return;
+      Provider.of<ProfileViewModel>(context, listen: false)
+          .updatePhoto(imageUrl);
       setState(() {
         _image = pickedFile;
       });

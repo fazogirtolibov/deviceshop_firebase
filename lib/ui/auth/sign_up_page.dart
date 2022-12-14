@@ -1,5 +1,8 @@
+import 'package:default_project/data/models/user_model.dart';
 import 'package:default_project/ui/auth/widgets/my_rich_text.dart';
+import 'package:default_project/view_models/profile_view_model.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -131,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  signUp() {
+  signUp() async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
@@ -140,9 +143,19 @@ class _SignUpPageState extends State<SignUpPage> {
     String confirmPassword = confirmPasswordController.text.trim();
 
     if (confirmPassword == password) {
-      Provider.of<AuthViewModel>(context, listen: false).signUp(
+      await Provider.of<AuthViewModel>(context, listen: false).signUp(
         email: email,
         password: password,
+      );
+      Provider.of<ProfileViewModel>(context, listen: false).addUser(
+        UserModel(
+          age: 0,
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          fullName: "",
+          email: email,
+          createdAt: DateTime.now().toString(),
+          imageUrl: "",
+        ),
       );
     } else {
       MyUtils.getMyToast(message: "Passwords don't match!");

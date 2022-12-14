@@ -79,21 +79,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       decoration: getInputDecoration(label: "Description"),
                     ),
                     const SizedBox(height: 20),
-                    if (imageUrl.isNotEmpty)
-                      Image.network(
-                        imageUrl,
-                        width: 200,
-                        height: 120,
-                      ),
-                    for (int index = 0; index < 3; index++)
-                      const ListTile(
-                        title: Text("photo"),
-                      ),
                     IconButton(
                         onPressed: () {
                           _showPicker(context);
                         },
-                        icon: Icon(Icons.upload))
+                        icon: const Icon(Icons.upload))
                   ],
                 )),
             ElevatedButton(

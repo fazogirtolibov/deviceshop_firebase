@@ -7,7 +7,7 @@ class MyColors {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color textColor = Color(0xFF3E434D);
-  static const Color C_F2F2F2 = Color(0xFFF2F2F2);
+  static const Color appBarText = Color(0xFF34495E);
 }
 
 class Palette {
