@@ -14,13 +14,17 @@ import 'package:default_project/view_models/profile_view_model.dart';
 import 'package:default_project/view_models/tab_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.subscribeToTopic("users");
+
   var fireStore = FirebaseFirestore.instance;
+
   runApp(
     MultiProvider(
       providers: [
@@ -58,7 +62,7 @@ void main() async {
           ),
         )
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -74,7 +78,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }
@@ -88,9 +92,9 @@ class MainPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.hasData) {
-            return TabBox();
+            return const TabBox();
           } else {
-            return AuthPage();
+            return const AuthPage();
           }
         });
   }

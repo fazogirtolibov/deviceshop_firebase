@@ -1,4 +1,7 @@
+import 'package:default_project/data/models/user_model.dart';
 import 'package:default_project/ui/tab_box/profile/profile_page.dart';
+import 'package:default_project/view_models/profile_view_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +21,24 @@ class _TabBoxState extends State<TabBox> {
 
   @override
   void initState() {
-    screens.add(HomePage());
-    screens.add(CardPage());
-    screens.add(ProfilePage());
+    screens.add(const HomePage());
+    screens.add(const CardPage());
+    screens.add(const ProfilePage());
+    _printFCMToken();
     super.initState();
+  }
+
+  _printFCMToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (!mounted) return;
+    UserModel? userModel =
+        Provider.of<ProfileViewModel>(context, listen: false).userModel;
+    if (userModel != null) {
+      Provider.of<ProfileViewModel>(context, listen: false)
+          .updateFCMToken(token ?? "", userModel.userId);
+    }
+
+    print("FCM TOKEN:$token");
   }
 
   @override

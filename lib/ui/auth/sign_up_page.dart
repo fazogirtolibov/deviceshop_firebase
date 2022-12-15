@@ -3,6 +3,7 @@ import 'package:default_project/ui/auth/widgets/my_rich_text.dart';
 import 'package:default_project/view_models/profile_view_model.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -118,10 +119,10 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: signUp,
-                child: Text("Sign Up"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff2A2A2A),
                 ),
+                child: const Text("Sign Up"),
               ),
               const SizedBox(height: 20),
               MyRichText(
@@ -147,15 +148,17 @@ class _SignUpPageState extends State<SignUpPage> {
         email: email,
         password: password,
       );
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
       Provider.of<ProfileViewModel>(context, listen: false).addUser(
         UserModel(
-          age: 0,
-          userId: FirebaseAuth.instance.currentUser!.uid,
-          fullName: "",
-          email: email,
-          createdAt: DateTime.now().toString(),
-          imageUrl: "",
-        ),
+            docId: "",
+            age: 0,
+            userId: FirebaseAuth.instance.currentUser!.uid,
+            fullName: "",
+            email: email,
+            createdAt: DateTime.now().toString(),
+            imageUrl: "",
+            fcmToken: fcmToken ?? ""),
       );
     } else {
       MyUtils.getMyToast(message: "Passwords don't match!");

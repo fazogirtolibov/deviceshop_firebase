@@ -1,5 +1,4 @@
 import 'package:default_project/data/services/file_uploader.dart';
-import 'package:default_project/ui/admin/admin_screen.dart';
 import 'package:default_project/utils/color.dart';
 import 'package:default_project/utils/icon.dart';
 import 'package:default_project/view_models/profile_view_model.dart';
